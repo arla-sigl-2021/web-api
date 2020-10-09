@@ -30,7 +30,7 @@ Make sure you get the `help requests` by running:
 
 ```
 # This should return 10 first help requests.
-$ curl http://localhost:3000/v1/help-request/other?page=1&limit=10
+$ curl http://localhost:3000/v1/help-request?page=1&limit=10
 ```
 
 > Note: we don't have hot reload implemented. We decided that it was unecessary overhead code since this workshop
