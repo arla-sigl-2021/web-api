@@ -87,7 +87,7 @@ Try out locally see if you can query the web API:
 ```sh
 # from the root of your repository:
 
-docker build -t arlaide-api:v1 ./api/Dockerfile
+docker build -t arlaide-api:v1 api/
 docker run -p 3000:3000 arlaide-api:v1
 ```
 
