@@ -1,8 +1,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
-import { FakeDB } from "./db";
-import { HelpRequest } from "./fake-data/help-requests";
+import { RDS, HelpRequest } from "./db";
 import { extractPageOptions } from "./utils";
 
 const app = express();
@@ -21,7 +20,7 @@ app.use(bodyParser.json());
 
 app.get(
   "/v1/help-request",
-  (request: express.Request, response: express.Response): void => {
+  async (request: express.Request, response: express.Response) => {
     // Getting value of page and limit query options:
     // ex: http://<domain>/v1/help-request?page=1&limit=10
     //  page == 1
@@ -30,7 +29,10 @@ app.get(
       const { page, limit } = extractPageOptions(request);
 
       // Query the page of help requests from the fake database
-      const helpRequests: HelpRequest[] = FakeDB.getHelpRequest(page, limit);
+      const helpRequests: HelpRequest[] = await RDS.getHelpRequests(
+        page,
+        limit
+      );
 
       // sends the response back to the client, when node will be ready!
       response.send(helpRequests);
