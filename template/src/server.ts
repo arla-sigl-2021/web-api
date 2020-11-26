@@ -26,7 +26,7 @@ app.get(
     //  page == 1
     //  limit == 10
     try {
-      const { page, limit } = extractPageOptions(request);
+      const { page, limit } = extractPageOptions(request.query);
 
       // Query the page of help requests from the fake database
       const helpRequests: HelpRequest[] = await RDS.getHelpRequests(

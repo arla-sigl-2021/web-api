@@ -1,4 +1,3 @@
-import express from "express";
 import qs from "qs";
 
 type ExtractPageOptionsResponse = {
@@ -10,21 +9,26 @@ type ExtractPageOptionsResponse = {
 // throws an error otherwise
 const asNumber = (query: qs.ParsedQs, optionName: string) => {
   const queryOption = query[optionName];
+  const invalidFormatError = new Error(
+    `${optionName} needs to be a valid number`
+  );
 
   if (typeof queryOption === "string") {
-    return +queryOption;
+    const n = +queryOption;
+    if (isNaN(n)) throw invalidFormatError;
+    return n;
   } else {
-    throw new Error(`${optionName} query option needs to be an integer`);
+    throw invalidFormatError;
   }
 };
 
 // Extracts `page` and `limit` from the request's
 // URL query options
 export const extractPageOptions = (
-  request: express.Request
+  query: qs.ParsedQs
 ): ExtractPageOptionsResponse => {
-  const page = asNumber(request.query, "page");
-  const limit = asNumber(request.query, "limit");
+  const page = asNumber(query, "page");
+  const limit = asNumber(query, "limit");
 
   if (page <= 0) {
     throw new Error("page needs to be a postive integer");
